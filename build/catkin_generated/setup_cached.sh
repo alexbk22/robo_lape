@@ -7,7 +7,5 @@
 # new environment variables
 
 # modified environment variables
-export CMAKE_PREFIX_PATH="/home/pi/git/robo_lape/devel:$CMAKE_PREFIX_PATH"
 export PWD="/home/pi/git/robo_lape/build"
-export ROSLISP_PACKAGE_DIRECTORIES="/home/pi/git/robo_lape/devel/share/common-lisp"
-export ROS_PACKAGE_PATH="/home/pi/git/robo_lape/src:$ROS_PACKAGE_PATH"
+export PYTHONPATH="/home/pi/git/robo_lape/devel/lib/python2.7/dist-packages:$PYTHONPATH"

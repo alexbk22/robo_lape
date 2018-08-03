@@ -1,0 +1,8 @@
+prefix=/home/pi/git/robo_lape/devel
+
+Name: bosch_bno055_driver
+Description: Description of bosch_bno055_driver
+Version: 0.0.1
+Cflags: 
+Libs: -L/home/pi/git/robo_lape/devel/lib 
+Requires: 

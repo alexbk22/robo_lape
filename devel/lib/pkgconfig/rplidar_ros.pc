@@ -1,0 +1,8 @@
+prefix=/home/pi/git/robo_lape/devel
+
+Name: rplidar_ros
+Description: Description of rplidar_ros
+Version: 1.7.0
+Cflags: 
+Libs: -L/home/pi/git/robo_lape/devel/lib 
+Requires: 
