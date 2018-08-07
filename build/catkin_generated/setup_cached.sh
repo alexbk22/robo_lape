@@ -8,4 +8,3 @@
 
 # modified environment variables
 export PWD="/home/pi/git/robo_lape/build"
-export PYTHONPATH="/home/pi/git/robo_lape/devel/lib/python2.7/dist-packages:$PYTHONPATH"
