@@ -1,0 +1,1 @@
+operacao máxima: 70 minutos devido à função micros() utilizada para computar as diferenças de tempo para os encoders

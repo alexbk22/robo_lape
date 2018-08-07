@@ -37,19 +37,24 @@ int M2 = 7;  //M2 Direction Control
 char velocidadeE = 107;
 char velocidadeD = 255;
 
-//Vetor de caminhos
-float cam[2] = {0, 0}; // {0, 0} parar {1,1} frente {-1,-1} tras
-int pulsosD = 0;     //Armazenar a soma dos pulsos de cada roda
-int pulsosE = 0;
-int distpulsos = 500;
+
+//##################################  SENSORES INFRAVERMELHO  ##################################
 
 //#####  Sensores (portas analogicas), distancia  #####
 int ifred[5][2] = {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}}; // esquerda para a direita posicao dos sensores
-int menorDist = 5000; //inicialmente com valor alto para entrar no while
-int nl = 5; //numero de leituras dos ifred, DEVE SER N IMPAR
+int menorDist = 5000;                                       // inicialmente com valor alto para entrar no while
+int nl = 5;                                                 // numero de leituras dos ifred, DEVE SER N IMPAR
+
+
+//##################################  SENSORES de COLISAO (BUMPERS)  ##################################
+
+//#####  Bumpers esquerda para a direita  #####
+int bump[3][2] = {{13, 0},  {12, 0}, {11, 0}}; // {porta, leitura}
 
 
 
+
+//###############################################################################
 //##################################  SETUP()  ##################################
 
 void setup() {
@@ -58,9 +63,12 @@ void setup() {
   for (int i = 4; i <= 7; i++)
     pinMode(i, OUTPUT);
 
-  Serial.begin(9600);//Initialize the serial port
-  Serial.println("Run keyboard control");
-  EncoderInit();//Initialize the module
+  //#####  Configurar a comunicao serial
+  Serial.begin(9600); // Initialize the serial port
+  Serial.println("SERIAL INICIALIZADA");
+
+  //#####  Inicializar os encoders
+  EncoderInit();  // Initialize the module
 
   //#####  Definir as portas de entrada dos sensores  #####
   for (int i = 0; i < 5; i++) {
@@ -70,30 +78,44 @@ void setup() {
     Serial.println(" definida como entrada.");
   }
 
-  //#####  Chamar funcao de coleta das distancias iniciais #####
-  dist_ifred();
 
-  delay (1000);
+  //#####  Definir as portas de entrada dos bumpers  #####
+  for (int i = 0; i < 3; i++) {
+    pinMode(bump[i][0], INPUT_PULLUP);
+    Serial.print("Porta analogica ");
+    Serial.print(bump[i][0]);
+    Serial.println(" definida como entrada.");
+  }
+
+  //#####  Chamar funcao de coleta das distancias iniciais #####
+  ler_dist_ifred();
+
+  //#####  Delay de 3 segundos
+  delay (3000);
 }
 
 
 
+
+//##############################################################################
 //##################################  LOOP()  ##################################
 
 void loop() {
-  while (menorDist > 11) {
+
+  while (menorDist > 40) {
     //back_off (velocidadeD, velocidadeE);  //move back in max speed
     turn_L(velocidadeD, velocidadeE);
     //advance (velocidadeD, velocidadeE);  //move back in max speed
     //#####  Chamar funcao de coleta das distancias  #####
-    menorDist = dist_ifred();
+    menorDist = ler_dist_ifred();
     //Serial.println(" Proxima leitura.... ");
     Serial.print("PulseD:");
-    Serial.print(durationD*-1);
+    Serial.print(durationD * -1); // *-1 por causa do sentido de rotacao se inverso um motor do outro
     Serial.print("   PulseE:");
     Serial.println(durationE);
     durationD = 0;
     durationE = 0;
+    ler_bump(bump);
   }
   stop();
   Serial.print("caiu aqui");
@@ -103,10 +125,22 @@ void loop() {
 }
 
 
+//#############################################################################
 //################################## FUNCOES ##################################
 
+
+//#################  Ler Bumpers
+//####### IMPORTANTE: O VALOR LIDO SERA 1 QUANDO NAO PRESSIONADO (NAO BATER), E SERA 0 QUANDO BATER
+void ler_bump (int (&bump)[3][2]) {
+  for (int i = 0; i < 3; i++) {
+    bump[i][1] = digitalRead(bump[i][0]);
+  }
+}
+
+
+
 //#################  Distancia IFRED  #################
-int dist_ifred () {
+int ler_dist_ifred () {
   int menor = 100;
   int leitura[nl]; //ira armazenar as leituras para o calculo da mediana
 
@@ -131,16 +165,12 @@ int dist_ifred () {
     if (ifred[i][1] < menor) {
       menor = ifred[i][1];
     }
-
-    /*Serial.print("Valor lido para o sensor ");
-    Serial.print(ifred[i][0]);
-    Serial.print(" eh: ");
-    Serial.print(ifred[i][1]);
-    Serial.println(" cm.");*/
   }
 
   return menor;
 }
+
+
 
 //#################  Filtro Mediana  #################
 int mediana (int vet[]) {
@@ -166,6 +196,8 @@ int mediana (int vet[]) {
   return n;
 }
 
+
+
 //#################  Encoders  #################
 void EncoderInit()
 {
@@ -179,6 +211,7 @@ void EncoderInit()
   attachInterrupt(1, wheelSpeedE, CHANGE);//int.1
 }
 
+//#####  Velocidade encoder roda DIREITA
 //Motor D
 void wheelSpeedD()
 {
@@ -201,6 +234,7 @@ void wheelSpeedD()
   else  durationD--;
 }
 
+//#####  Velocidade encoder roda ESQUERDA
 //Motor E
 void wheelSpeedE()
 {
@@ -223,15 +257,19 @@ void wheelSpeedE()
   else  durationE--;
 }
 
-//  STOP
+
+
+//#################  FUNCOES DE MOVIMENTO  #################  
+
+//#####  PARAR
 void stop(void)
 {
   digitalWrite(E1, LOW);
   digitalWrite(E2, LOW);
 }
 
-//  Move forward
-void advance(char a, char b)
+//#####  TRAS
+void ir_tras (char a, char b)
 {
   analogWrite (E1, a);     //PWM Speed Control
   digitalWrite(M1, HIGH);
@@ -239,8 +277,8 @@ void advance(char a, char b)
   digitalWrite(M2, HIGH);
 }
 
-//   Move backward
-void back_off (char a, char b)
+//#####  FRENTE
+void ir_frente (char a, char b)
 {
   analogWrite (E1, a);
   digitalWrite(M1, LOW);
@@ -248,8 +286,8 @@ void back_off (char a, char b)
   digitalWrite(M2, LOW);
 }
 
-//   Turn Left
-void turn_L (char a, char b)
+//####  ESQUERDA
+void ir_esquerda (char a, char b)
 {
   analogWrite (E1, a);
   digitalWrite(M1, LOW);
@@ -257,8 +295,8 @@ void turn_L (char a, char b)
   digitalWrite(M2, HIGH);
 }
 
-//   Turn Right
-void turn_R (char a, char b)
+//#####  DIREITA
+void ir_direita (char a, char b)
 {
   analogWrite (E1, a);
   digitalWrite(M1, HIGH);

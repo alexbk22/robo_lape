@@ -1,0 +1,12 @@
+instalar robot_pose_ekf
+
+http://wiki.ros.org/robot_pose_ekf
+
+sobre odometria no ROS:
+https://answers.ros.org/question/11973/gathering-wheel-encoder-data-and-publishing-on-the-odom-topic/
+http://wiki.ros.org/navigation/Tutorials/RobotSetup/Odom
+https://github.com/ros-planning/navigation_tutorials/blob/indigo-devel/odometry_publisher_tutorial/src/odometry_publisher.cpp
+
+modelo matematico, odometria rodas:
+http://rossum.sourceforge.net/papers/DiffSteer/
+

@@ -17,7 +17,6 @@ void setup() {
     Serial.print("Porta analogica ");
     Serial.print(ifred[i][0]);
     Serial.println(" definida como entrada.");
-
   }
 }
 
