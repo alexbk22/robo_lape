@@ -11,36 +11,54 @@
 //##################################  ENCODERS  ##################################
 
 //#####  Motor Direito
-const byte encoderDpinA = 2;//A pin -> the interrupt pin 2
-const byte encoderDpinB = 8;//B pin -> the digital pin 8
+const byte encoderDpinA = 2; //A pin -> the interrupt pin 2
+const byte encoderDpinB = 8; //B pin -> the digital pin 8
 byte encoderDPinALast;
-int durationD;//the number of the pulses
-boolean DirectionD;//the rotation direction
+int durationD;               //the number of the pulses
+boolean DirectionD;          //the rotation direction
 
 //#####  Motor Esquerdo
-const byte encoderEpinA = 3;//A pin -> the interrupt pin 3
-const byte encoderEpinB = 9;//B pin -> the digital pin 9
+const byte encoderEpinA = 3; //A pin -> the interrupt pin 3
+const byte encoderEpinB = 9; //B pin -> the digital pin 9
 byte encoderEPinALast;
-int durationE;//the number of the pulses
-boolean DirectionE;//the rotation direction
+int durationE;               //the number of the pulses
+boolean DirectionE;          //the rotation direction
 
 
 //##################################  PWM CONTROL MODE  ##################################
 
-//####  Standard PWM DC control
+//#####  Standard PWM DC control
 int E1 = 5;  //M1 Speed Control
 int E2 = 6;  //M2 Speed Control
 int M1 = 4;  //M1 Direction Control
 int M2 = 7;  //M2 Direction Control
 
-//####  Setar velocidade dos motores
-char velocidadeE = 107;
-char velocidadeD = 255;
+//#####  Setar velocidade dos motores
+int vel_max = 150;                        //velocidade maxima para ambos os motores
+int vel_min = vel_max / 2;               //velocidade minima para o motor esquerdo
+int velocidadeE = vel_max - vel_max / 4; //questao de rotacao dos motores, o direito esta girando mais lento
+int velocidadeD = vel_max;
+
+
+//#####  Numero de (passos do encoder) para giro
+float ppr = 663;                  //pulsos por volta
+float diam = 13.5 / 100.0;      //diametro das rodas em m
+float er = 2.1 / 100.0;         //espessura das rodas em m
+float base = 30.0 / 100.0 - er; //distancia entre os centros das rodas em m
+float circum = PI * diam;       //circunferencia das rodas em m
+float g_ppr = 360 / ppr;        //graus decimais por pulso
+float circum_base = PI * base;
+
+float ang_giro = 90;
+double ppr_g = ((circum_base * ang_giro / 10.0) / 18.0) / (circum / ppr);
+//double ppr_g = ang_giro / 10 * ppr / 18.0; //(ang_giro*ppr/360.0)/2.0
+int enc_D = 0;                  //para armazenar o numero de passos dos encoders e calcular os giros
+int enc_E = 0;
 
 
 //##################################  SENSORES INFRAVERMELHO  ##################################
 
-//#####  Sensores (portas analogicas), distancia  #####
+//#####  Sensores (portas analogicas), distancia
 int ifred[5][2] = {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}}; // esquerda para a direita posicao dos sensores
 int menorDist = 5000;                                       // inicialmente com valor alto para entrar no while
 int nl = 5;                                                 // numero de leituras dos ifred, DEVE SER N IMPAR
@@ -48,8 +66,14 @@ int nl = 5;                                                 // numero de leitura
 
 //##################################  SENSORES de COLISAO (BUMPERS)  ##################################
 
-//#####  Bumpers esquerda para a direita  #####
-int bump[3][2] = {{13, 0},  {12, 0}, {11, 0}}; // {porta, leitura}
+//#####  Bumpers esquerda para a direita
+int bump[3] = {13, 12, 11}; // {porta digital}
+
+
+//##################################  STRING DE SAIDA (RESULTADOS A SEREM PROCESSADOS)  ##################################
+String data;
+
+
 
 
 
@@ -59,35 +83,28 @@ int bump[3][2] = {{13, 0},  {12, 0}, {11, 0}}; // {porta, leitura}
 
 void setup() {
 
-  //#####  Pinos dos motores  #####
+  //#####  Pinos dos motores
   for (int i = 4; i <= 7; i++)
     pinMode(i, OUTPUT);
 
   //#####  Configurar a comunicao serial
-  Serial.begin(9600); // Initialize the serial port
-  Serial.println("SERIAL INICIALIZADA");
+  Serial.begin(115200);   // Initialize the serial port
 
   //#####  Inicializar os encoders
-  EncoderInit();  // Initialize the module
+  EncoderInit();          // Initialize the module
 
-  //#####  Definir as portas de entrada dos sensores  #####
+  //#####  Definir as portas de entrada dos sensores
   for (int i = 0; i < 5; i++) {
     pinMode(ifred[i][0], INPUT_PULLUP);
-    Serial.print("Porta analogica ");
-    Serial.print(ifred[i][0]);
-    Serial.println(" definida como entrada.");
   }
 
 
-  //#####  Definir as portas de entrada dos bumpers  #####
+  //#####  Definir as portas de entrada dos bumpers
   for (int i = 0; i < 3; i++) {
-    pinMode(bump[i][0], INPUT_PULLUP);
-    Serial.print("Porta analogica ");
-    Serial.print(bump[i][0]);
-    Serial.println(" definida como entrada.");
+    pinMode(bump[i], INPUT_PULLUP);
   }
 
-  //#####  Chamar funcao de coleta das distancias iniciais #####
+  //#####  Chamar funcao de coleta das distancias iniciais
   ler_dist_ifred();
 
   //#####  Delay de 3 segundos
@@ -97,44 +114,151 @@ void setup() {
 
 
 
+
+
 //##############################################################################
 //##################################  LOOP()  ##################################
 
 void loop() {
 
-  while (menorDist > 40) {
-    //back_off (velocidadeD, velocidadeE);  //move back in max speed
-    turn_L(velocidadeD, velocidadeE);
-    //advance (velocidadeD, velocidadeE);  //move back in max speed
+  //############################################################################
+  //#####  IR PARA FRENTE  #####
+  while (menorDist > 30) {
+
+    //#####  acionar os motores
+    ir_frente(velocidadeD, velocidadeE);
+
     //#####  Chamar funcao de coleta das distancias  #####
     menorDist = ler_dist_ifred();
+
+    //#####  ajuste de velocidade frente
+    ajust_vel_f(velocidadeE, durationD, durationE);
+
+    //#####
     //Serial.println(" Proxima leitura.... ");
-    Serial.print("PulseD:");
-    Serial.print(durationD * -1); // *-1 por causa do sentido de rotacao se inverso um motor do outro
-    Serial.print("   PulseE:");
-    Serial.println(durationE);
+    data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+    Serial.println(data);
+
     durationD = 0;
     durationE = 0;
-    ler_bump(bump);
+
+
+    if (ler_bump(bump)) {
+      stop();
+      data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+      break;
+    }
+  } stop(); delay(1000);
+
+
+  //############################################################################
+  //#####  GIRAR PARA A DIREITA  #####
+  enc_D = 0;
+  enc_E = 0;
+
+  Serial.print("ppr_g: ");
+  Serial.println(ppr_g);
+  //while (enc_D < ppr_g && enc_E < ppr_g) {
+  while (enc_D < ppr_g && enc_E < ppr_g) {
+    if (enc_D < ppr_g && enc_E < ppr_g) {
+      ir_dir(velocidadeD, velocidadeE);
+    } else if (enc_D > ppr_g && enc_E < ppr_g) {
+      ir_dir(0, velocidadeE);
+    } else if (enc_D < ppr_g && enc_E > ppr_g) {
+      ir_dir(velocidadeD, 0);
+    } else {
+      break;
+    }
+
+
+    //#####  acionar os motores
+    //ir_dir(velocidadeD, velocidadeE);
+
+    //#####  ajuste de velocidade direita
+    //ajust_vel_d(velocidadeE, durationD, durationE);
+
+    //#####
+    data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+    Serial.println(data);
+
+    enc_D += durationD;
+    enc_E += durationE;
+
+    durationD = 0;
+    durationE = 0;
+
+    if (ler_bump(bump)) {
+      stop();
+      data = String(durationE) + "," + String(-durationD);// + "," + String(micros());
+      break;
+    }
+
   }
+
+  velocidadeE = vel_max - vel_max / 4;
+  velocidadeD = vel_max;
+
   stop();
-  Serial.print("caiu aqui");
   menorDist = 5000;
 
   delay(4000);
 }
 
 
+
+
+
+
 //#############################################################################
 //################################## FUNCOES ##################################
 
+//################# ajustar velocidade ir para frente
+void ajust_vel_f(int& velocidadeE, int& durationD, int& durationE) {
+  int dif = durationD + durationE;
+  if (dif < -1)
+    velocidadeE += -dif / 2;
+  else if (dif > 1)
+    velocidadeE += -dif / 2;
 
-//#################  Ler Bumpers
+  if (velocidadeE > vel_max)
+    velocidadeE = vel_max;
+  else if (velocidadeE < vel_min)
+    velocidadeE = vel_min;
+
+  //String data = String(velocidadeE) + "," + String(durationE) + "," + String(-durationD);// + "," + String(micros());
+  //Serial.println(data);
+}
+
+/*
+//################# ajustar velocidade girar direita
+void ajust_vel_d(int& velocidadeE, int& durationD, int& durationE) {
+  int dif = durationD - durationE;
+  if (dif < 0)
+    velocidadeE += dif * 2;
+  else if (dif > 0)
+    velocidadeE += dif * 2;
+
+  if (velocidadeE > vel_max)
+    velocidadeE = vel_max;
+  else if (velocidadeE < vel_min)
+    velocidadeE = vel_min;
+
+  //String data = String(velocidadeE) + "," + String(durationE) + "," + String(-durationD);// + "," + String(micros());
+  //Serial.println(data);
+}*/
+
+
+//#################  Ler Bumpers  #################
 //####### IMPORTANTE: O VALOR LIDO SERA 1 QUANDO NAO PRESSIONADO (NAO BATER), E SERA 0 QUANDO BATER
-void ler_bump (int (&bump)[3][2]) {
+bool ler_bump (int bump[3]) {
+  bool a = 0;
   for (int i = 0; i < 3; i++) {
-    bump[i][1] = digitalRead(bump[i][0]);
+    if (digitalRead(bump[i]) == 0) {
+      a = 1;
+      break;
+    }
   }
+  return a;
 }
 
 
@@ -177,7 +301,7 @@ int mediana (int vet[]) {
 
   int mn = 0; // armazenar o menor valor lido
   int pos = 0; // armazenar a posicao do menor valor
-  int n = ceil(nl / 2); // armazenar a posicao e depois o valor da mediana
+  int n = ceil(nl / 2); // armazenar a posicao
 
   for (int i = 0; i < nl; i++) {
     mn = vet[i];
@@ -192,8 +316,7 @@ int mediana (int vet[]) {
     vet[i] = mn;
   }
 
-  n = vet[n];
-  return n;
+  return vet[n];
 }
 
 
@@ -259,7 +382,7 @@ void wheelSpeedE()
 
 
 
-//#################  FUNCOES DE MOVIMENTO  #################  
+//#################  FUNCOES DE MOVIMENTO  #################
 
 //#####  PARAR
 void stop(void)
@@ -287,7 +410,7 @@ void ir_frente (char a, char b)
 }
 
 //####  ESQUERDA
-void ir_esquerda (char a, char b)
+void ir_esq (char a, char b)
 {
   analogWrite (E1, a);
   digitalWrite(M1, LOW);
@@ -296,7 +419,7 @@ void ir_esquerda (char a, char b)
 }
 
 //#####  DIREITA
-void ir_direita (char a, char b)
+void ir_dir (char a, char b)
 {
   analogWrite (E1, a);
   digitalWrite(M1, HIGH);
