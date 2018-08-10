@@ -10,3 +10,9 @@ https://github.com/ros-planning/navigation_tutorials/blob/indigo-devel/odometry_
 modelo matematico, odometria rodas:
 http://rossum.sourceforge.net/papers/DiffSteer/
 
+permissao para uma porta USB:
+sudo chmod 666 /dev/ttyUSB0
+sudo chmod 666 /dev/ttyACM0
+
+
+
