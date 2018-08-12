@@ -1,0 +1,8 @@
+prefix=/home/pi/git/robo_lape/install
+
+Name: angles
+Description: Description of angles
+Version: 1.9.11
+Cflags: -I/home/pi/git/robo_lape/install/include
+Libs: -L/home/pi/git/robo_lape/install/lib 
+Requires: 

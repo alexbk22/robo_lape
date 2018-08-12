@@ -1,0 +1,8 @@
+prefix=/home/pi/git/robo_lape/install
+
+Name: eigen_conversions
+Description: Description of eigen_conversions
+Version: 1.12.0
+Cflags: -I/home/pi/git/robo_lape/install/include -I/usr/include/eigen3
+Libs: -L/home/pi/git/robo_lape/install/lib -leigen_conversions -lorocos-kdl
+Requires: geometry_msgs std_msgs

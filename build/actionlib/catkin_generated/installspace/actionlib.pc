@@ -1,0 +1,8 @@
+prefix=/home/pi/git/robo_lape/install
+
+Name: actionlib
+Description: Description of actionlib
+Version: 1.11.14
+Cflags: -I/home/pi/git/robo_lape/install/include -I/usr/include
+Libs: -L/home/pi/git/robo_lape/install/lib -lactionlib /usr/lib/arm-linux-gnueabihf/libboost_thread.so /usr/lib/arm-linux-gnueabihf/libboost_chrono.so /usr/lib/arm-linux-gnueabihf/libboost_system.so /usr/lib/arm-linux-gnueabihf/libboost_date_time.so /usr/lib/arm-linux-gnueabihf/libboost_atomic.so /usr/lib/arm-linux-gnueabihf/libpthread.so
+Requires: actionlib_msgs message_runtime roscpp std_msgs
