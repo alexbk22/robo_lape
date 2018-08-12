@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/dash
 
 #launch roscore
 xterm -e roscore &
