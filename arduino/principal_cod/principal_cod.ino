@@ -6,6 +6,13 @@
   http://arduino.cc/en/Reference/AttachInterrupt
 */
 
+//##################################  BIBLIOTECAS  ##################################
+#include <Servo.h>        // inclui biblioteca de manipulação de servos motores.
+//#include <Ultrasonic.h>   // inclui biblioteca do sensor ultrasonico HC-SR04
+
+
+//##################################  MENOR DISTANCIA OBSTACULOS  ##################################
+#define dist_obst 40  //40 cm
 
 
 //##################################  ENCODERS  ##################################
@@ -59,9 +66,9 @@ int enc_E = 0;
 //##################################  SENSORES INFRAVERMELHO  ##################################
 
 //#####  Sensores (portas analogicas), distancia
-int ifred[5][2] = {{0, 0}, {1, 0}, {2, 0}, {3, 0}, {4, 0}}; // esquerda para a direita posicao dos sensores
-int menorDist = 5000;                                       // inicialmente com valor alto para entrar no while
-int nl = 5;                                                 // numero de leituras dos ifred, DEVE SER N IMPAR
+int ifred[3][2] = {{0, 0}, {2, 0}, {4, 0}}; //esquerda para a direita posicao dos sensores
+int menorDist = 5000;                                       //inicialmente com valor alto para entrar no while
+int nl = 9;                                                 //numero de leituras dos ifred, DEVE SER N IMPAR
 
 
 //##################################  SENSORES de COLISAO (BUMPERS)  ##################################
@@ -74,8 +81,8 @@ int bump[3] = {13, 12, 11}; // {porta digital}
 String data;
 
 
-
-
+//##################################  SERVO  ##################################  
+Servo servo;
 
 
 //###############################################################################
@@ -93,10 +100,10 @@ void setup() {
   //#####  Inicializar os encoders
   EncoderInit();          // Initialize the module
 
-  //#####  Definir as portas de entrada dos sensores
-  for (int i = 0; i < 5; i++) {
-    pinMode(ifred[i][0], INPUT_PULLUP);
-  }
+  //#####  Definir as portas de entrada dos sensores ifred
+  pinMode(A0, INPUT);  //Sensor esquerdo 5
+  pinMode(A2, INPUT);  //Sensor central 3
+  pinMode(A4, INPUT);  //Sensor direito 1
 
 
   //#####  Definir as portas de entrada dos bumpers
@@ -106,6 +113,9 @@ void setup() {
 
   //#####  Chamar funcao de coleta das distancias iniciais
   ler_dist_ifred();
+
+  //#####  Servo
+  servo.attach(10);
 
   //#####  Delay de 3 segundos
   delay (3000);
@@ -123,42 +133,48 @@ void loop() {
 
   //############################################################################
   //#####  IR PARA FRENTE  #####
-  while (menorDist > 30) {
+  while (menorDist > dist_obst) {
+
+    //#####  Chamar funcao de coleta das distancias  #####
+    menorDist = ler_dist_ifred();
+    Serial.println(menorDist);
 
     //#####  acionar os motores
     ir_frente(velocidadeD, velocidadeE);
 
-    //#####  Chamar funcao de coleta das distancias  #####
-    menorDist = ler_dist_ifred();
-
     //#####  ajuste de velocidade frente
     ajust_vel_f(velocidadeE, durationD, durationE);
 
-    //#####
-    //Serial.println(" Proxima leitura.... ");
+    //#####  Dados
     data = String(durationE) + "," + String(-durationD) + "," + String(micros());
     Serial.println(data);
 
+    //#####  setando os encoders
     durationD = 0;
     durationE = 0;
 
-
+    //#####  identificar colisoes
     if (ler_bump(bump)) {
       stop();
       data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+      Serial.println(data);
       break;
     }
-  } stop(); delay(1000);
+  }
+  //#####  para rotacao dos motores
+  stop(); delay(500);
 
-
+  servo.write(90);
+  
   //############################################################################
   //#####  GIRAR PARA A DIREITA  #####
+  //#####  zerar o contador dos encoders
   enc_D = 0;
   enc_E = 0;
 
-  Serial.print("ppr_g: ");
-  Serial.println(ppr_g);
-  //while (enc_D < ppr_g && enc_E < ppr_g) {
+  //Serial.print("ppr_g: ");
+  //Serial.println(ppr_g);
+
   while (enc_D < ppr_g && enc_E < ppr_g) {
     if (enc_D < ppr_g && enc_E < ppr_g) {
       ir_dir(velocidadeD, velocidadeE);
@@ -177,7 +193,7 @@ void loop() {
     //#####  ajuste de velocidade direita
     //ajust_vel_d(velocidadeE, durationD, durationE);
 
-    //#####
+    //#####  Dados
     data = String(durationE) + "," + String(-durationD) + "," + String(micros());
     Serial.println(data);
 
@@ -189,7 +205,8 @@ void loop() {
 
     if (ler_bump(bump)) {
       stop();
-      data = String(durationE) + "," + String(-durationD);// + "," + String(micros());
+      data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+      Serial.println(data);
       break;
     }
 
@@ -201,7 +218,7 @@ void loop() {
   stop();
   menorDist = 5000;
 
-  delay(4000);
+  delay(500);
 }
 
 
@@ -230,8 +247,8 @@ void ajust_vel_f(int& velocidadeE, int& durationD, int& durationE) {
 }
 
 /*
-//################# ajustar velocidade girar direita
-void ajust_vel_d(int& velocidadeE, int& durationD, int& durationE) {
+  //################# ajustar velocidade girar direita
+  void ajust_vel_d(int& velocidadeE, int& durationD, int& durationE) {
   int dif = durationD - durationE;
   if (dif < 0)
     velocidadeE += dif * 2;
@@ -245,7 +262,7 @@ void ajust_vel_d(int& velocidadeE, int& durationD, int& durationE) {
 
   //String data = String(velocidadeE) + "," + String(durationE) + "," + String(-durationD);// + "," + String(micros());
   //Serial.println(data);
-}*/
+  }*/
 
 
 //#################  Ler Bumpers  #################
@@ -268,7 +285,8 @@ int ler_dist_ifred () {
   int menor = 100;
   int leitura[nl]; //ira armazenar as leituras para o calculo da mediana
 
-  for (int i = 0; i < 5; i++) {
+  for (int i = 0; i < 3; i++) {
+    //Serial.println(analogRead(ifred[i][0]));
     for (int j = 0; j < nl; j++) {
       leitura[j] = analogRead(ifred[i][0]);
       if (leitura[j] == 1023) {
@@ -277,11 +295,11 @@ int ler_dist_ifred () {
         if (leitura[j] < 80) {
           leitura[j] = 80;
         } else if (leitura[j] > 450) {
-          leitura[j] = 450;
+          leitura[j] = 80;
         }
         leitura[j] = pow(3027.4 / leitura[j], 1.2134);
-        delay(0.5);
       }
+      delay(2);
     }
 
     //##### chamar a funcao da mediana #####
@@ -289,7 +307,20 @@ int ler_dist_ifred () {
     if (ifred[i][1] < menor) {
       menor = ifred[i][1];
     }
+    /*Serial.print("Ifred: ");
+      Serial.print(ifred[i][0]);
+      Serial.print("  ");
+      Serial.println(ifred[i][1]);*/
   }
+  /*Serial.print(ifred[0][1]);
+    Serial.print(" ");
+    Serial.print(ifred[1][1]);
+    Serial.print(" ");
+    Serial.print(ifred[2][1]);
+    Serial.print(" ");
+    Serial.print(ifred[3][1]);
+    Serial.print(" ");
+    Serial.println(ifred[4][1]);*/
 
   return menor;
 }
@@ -302,6 +333,7 @@ int mediana (int vet[]) {
   int mn = 0; // armazenar o menor valor lido
   int pos = 0; // armazenar a posicao do menor valor
   int n = ceil(nl / 2); // armazenar a posicao
+  int m = ceil(nl / 4); // melhorar as leituras
 
   for (int i = 0; i < nl; i++) {
     mn = vet[i];
@@ -316,7 +348,7 @@ int mediana (int vet[]) {
     vet[i] = mn;
   }
 
-  return vet[n];
+  return vet[n - m];
 }
 
 
