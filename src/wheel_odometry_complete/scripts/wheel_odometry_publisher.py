@@ -86,6 +86,9 @@ while not rospy.is_shutdown():
             vdata = map(int,data)
             #print vdata
 
+    
+    #vdata = [10,20,1000]
+
     time2 = vdata[2]
 
     #time variation #TO_MODIFY 

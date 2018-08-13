@@ -56,7 +56,8 @@ float g_ppr = 360 / ppr;        //graus decimais por pulso
 float circum_base = PI * base;
 
 float ang_giro = 90;
-double ppr_g = (((circum_base * (ang_giro / 10.0)) / 18.0) / (circum / ppr)) / 2;
+//double ppr_g = (((circum_base * (ang_giro / 10.0)) / 18.0) / (circum / ppr)) / 2;
+double ppr_g = 15;
 //double ppr_g = ang_giro / 10 * ppr / 18.0; //(ang_giro*ppr/360.0)/2.0
 int enc_D = 0;                  //para armazenar o numero de passos dos encoders e calcular os giros
 int enc_E = 0;
@@ -120,7 +121,7 @@ void setup() {
   //#####  Delay de 3 segundos
   delay (3000);
 
-  //Serial.println(ppr_g);
+  /*Serial.println(ppr_g);*/
 }
 
 
@@ -169,6 +170,10 @@ void loop() {
 
   //#####  parar rotacao dos motores
   stop();
+  delay(3);
+  ir_tras(velocidadeD, velocidadeE);
+  delay(3);
+  stop();
 
   //#####  Delay de 1 segundo
   for (int i = 0; i < 200; i++) {
@@ -179,6 +184,8 @@ void loop() {
 
   //##### Escolher direcao a seguir
   caminho = esc_dir_servo();
+  /*Serial.print("Caminho: ");
+    Serial.println(caminho);*/
 
 
   //############################################################################
@@ -188,6 +195,9 @@ void loop() {
     //#####  zerar o contador dos encoders
     enc_D = 0;
     enc_E = 0;
+    //#####  setando os encoders
+    durationD = 0;
+    durationE = 0;
 
     while (enc_D < ppr_g || enc_E < ppr_g) {
       if (enc_D < ppr_g && enc_E < ppr_g) {
@@ -200,21 +210,27 @@ void loop() {
         break;
       }
 
-      enc_D += -durationD;
+      enc_D += durationD;
       enc_E += durationE;
 
       //#####  Dados
       data = String(durationE) + "," + String(-durationD) + "," + String(micros());
       Serial.println(data);
-      Serial.print("direita ");
-      Serial.print("enc_D: ");
-      Serial.print(enc_D);
-      Serial.print(" enc_E: ");
-      Serial.println(enc_E);
+      /*Serial.print("direita ");
+        Serial.print("enc_D: ");
+        Serial.print(enc_D);
+        Serial.print(" enc_E: ");
+        Serial.println(enc_E);*/
 
 
       if (ler_bump(bump)) {
+        //#####  parar rotacao dos motores
         stop();
+        delay(3);
+        ir_tras(velocidadeD, velocidadeE);
+        delay(200);
+        stop();
+
         data = String(durationE) + "," + String(-durationD) + "," + String(micros());
         Serial.println(data);
         break;
@@ -225,7 +241,6 @@ void loop() {
       durationE = 0;
     }
 
-
   }
 
   //############################################################################
@@ -234,14 +249,17 @@ void loop() {
     //#####  zerar o contador dos encoders
     enc_D = 0;
     enc_E = 0;
+    //#####  setando os encoders
+    durationD = 0;
+    durationE = 0;
 
     while (enc_D > -ppr_g || enc_E > -ppr_g) {
       if (enc_D > -ppr_g && enc_E > -ppr_g) {
-        ir_dir(velocidadeD, velocidadeE);
+        ir_esq(velocidadeD, velocidadeE);
       } else if (enc_D < -ppr_g && enc_E > -ppr_g) {
-        ir_dir(0, velocidadeE);
+        ir_esq(0, velocidadeE);
       } else if (enc_D > -ppr_g && enc_E < -ppr_g) {
-        ir_dir(velocidadeD, 0);
+        ir_esq(velocidadeD, 0);
       } else {
         break;
       }
@@ -252,14 +270,20 @@ void loop() {
       //#####  Dados
       data = String(durationE) + "," + String(-durationD) + "," + String(micros());
       Serial.println(data);
-      Serial.print("esquerda ");
-      Serial.print("enc_D: ");
-      Serial.print(enc_D);
-      Serial.print(" enc_E: ");
-      Serial.println(enc_E);
+      /*Serial.print("esquerda ");
+        Serial.print("enc_D: ");
+        Serial.print(enc_D);
+        Serial.print(" enc_E: ");
+        Serial.println(enc_E);*/
 
       if (ler_bump(bump)) {
+        //#####  parar rotacao dos motores
         stop();
+        delay(3);
+        ir_tras(velocidadeD, velocidadeE);
+        delay(200);
+        stop();
+
         data = String(durationE) + "," + String(-durationD) + "," + String(micros());
         Serial.println(data);
         break;
@@ -277,7 +301,13 @@ void loop() {
   velocidadeE = vel_max - vel_max / 4;
   velocidadeD = vel_max;
 
+  //#####  parar rotacao dos motores
   stop();
+  delay(3);
+  ir_tras(velocidadeD, velocidadeE);
+  delay(3);
+  stop();
+  
   menorDist = 5000;
 
   delay(500);
@@ -434,9 +464,9 @@ bool esc_dir_servo() {
   }
 
   if (ang < 90)
-    return true;
-  else if (ang > 90)
     return false;
+  else if (ang > 90)
+    return true;
 
 }
 

@@ -3,6 +3,6 @@ prefix=/home/pi/git/robo_lape/devel
 Name: tf2_kdl
 Description: Description of tf2_kdl
 Version: 0.6.3
-Cflags: -I/home/pi/git/robo_lape/src/geometry2/tf2_kdl/include -I/usr/include/eigen3
-Libs: -L/home/pi/git/robo_lape/devel/lib -lorocos-kdl
+Cflags: -I/home/pi/git/robo_lape/src/geometry2/tf2_kdl/include -I/usr/include/eigen3 -I/home/pi/orocos_kinematics_dynamics/orocos_kdl/build/../../../include
+Libs: -L/home/pi/git/robo_lape/devel/lib /home/pi/orocos_kinematics_dynamics/orocos_kdl/build/src/liborocos-kdl.so.1.4.0
 Requires: 

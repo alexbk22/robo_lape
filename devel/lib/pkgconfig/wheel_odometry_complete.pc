@@ -1,0 +1,8 @@
+prefix=/home/pi/git/robo_lape/devel
+
+Name: wheel_odometry_complete
+Description: Description of wheel_odometry_complete
+Version: 0.1.0
+Cflags: 
+Libs: -L/home/pi/git/robo_lape/devel/lib 
+Requires: 

@@ -91,9 +91,9 @@ endif()
 # flag project as catkin-based to distinguish if a find_package()-ed project is a catkin project
 set(tf2_geometry_msgs_FOUND_CATKIN_PROJECT TRUE)
 
-if(NOT "include " STREQUAL " ")
+if(NOT "include;/home/pi/orocos_kinematics_dynamics/orocos_kdl/build/../../../include;/usr/include/eigen3 " STREQUAL " ")
   set(tf2_geometry_msgs_INCLUDE_DIRS "")
-  set(_include_dirs "include")
+  set(_include_dirs "include;/home/pi/orocos_kinematics_dynamics/orocos_kdl/build/../../../include;/usr/include/eigen3")
   if(NOT " " STREQUAL " ")
     set(_report "Check the issue tracker '' and consider creating a ticket if the problem has not been reported yet.")
   elseif(NOT "http://www.ros.org/wiki/tf2_ros " STREQUAL " ")
@@ -116,7 +116,7 @@ if(NOT "include " STREQUAL " ")
   endforeach()
 endif()
 
-set(libraries "orocos-kdl")
+set(libraries "/usr/local/lib/liborocos-kdl.so;/home/pi/orocos_kinematics_dynamics/orocos_kdl/build/src/liborocos-kdl.so.1.4.0")
 foreach(library ${libraries})
   # keep build configuration keywords, target names and absolute libraries as-is
   if("${library}" MATCHES "^(debug|optimized|general)$")

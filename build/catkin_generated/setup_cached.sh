@@ -7,5 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export PATH="/home/pi/git/robo_lape/devel/bin:$PATH"
 export PWD="/home/pi/git/robo_lape/build"

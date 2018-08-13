@@ -271,7 +271,7 @@ GTEST_MAIN_LIBRARY:FILEPATH=GTEST_MAIN_LIBRARY-NOTFOUND
 GTEST_MAIN_LIBRARY_DEBUG:FILEPATH=GTEST_MAIN_LIBRARY_DEBUG-NOTFOUND
 
 //Path to a library.
-KDL_LIBRARY:FILEPATH=KDL_LIBRARY-NOTFOUND
+KDL_LIBRARY:FILEPATH=/usr/local/lib/liborocos-kdl.so
 
 //lsb_release executable was found
 LSB_FOUND:BOOL=TRUE
@@ -334,7 +334,7 @@ _gtest_INCLUDES:FILEPATH=/usr/include/gtest/gtest.h
 _gtest_SOURCES:FILEPATH=/usr/src/gtest/src/gtest.cc
 
 //Path to a file.
-_path_name:FILEPATH=/home/pi/git/robo_lape/src/geometry/tf/test/testPython.py
+_path_name:FILEPATH=/home/pi/git/robo_lape/src/geometry2/tf2_sensor_msgs/test/test_tf2_sensor_msgs.py
 
 //Value Computed by CMake
 actionlib_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/actionlib
@@ -503,7 +503,7 @@ kdl_conversions_LIB_DEPENDS:STATIC=general;/opt/ros/kinetic/lib/libroscpp_serial
 kdl_conversions_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry/kdl_conversions
 
 //Path to a library.
-lib:FILEPATH=lib-NOTFOUND
+lib:FILEPATH=/opt/ros/kinetic/lib/libmessage_filters.so
 
 //The directory containing a CMake configuration file for message_filters.
 message_filters_DIR:PATH=/opt/ros/kinetic/share/message_filters/cmake
@@ -517,7 +517,8 @@ message_runtime_DIR:PATH=/opt/ros/kinetic/share/message_runtime/cmake
 //Value Computed by CMake
 nav_msgs_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/common_msgs/nav_msgs
 
-nav_msgs_DIR:PATH=
+//The directory containing a CMake configuration file for nav_msgs.
+nav_msgs_DIR:PATH=/home/pi/git/robo_lape/devel/share/nav_msgs/cmake
 
 //Value Computed by CMake
 nav_msgs_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/common_msgs/nav_msgs
@@ -615,8 +616,7 @@ tf2_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2
 //Value Computed by CMake
 tf2_bullet_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/geometry2/tf2_bullet
 
-//The directory containing a CMake configuration file for tf2_bullet.
-tf2_bullet_DIR:PATH=/home/pi/git/robo_lape/devel/share/tf2_bullet/cmake
+tf2_bullet_DIR:PATH=
 
 //Value Computed by CMake
 tf2_bullet_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2_bullet
@@ -630,8 +630,7 @@ tf2_eigen_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2_eigen
 //Value Computed by CMake
 tf2_geometry_msgs_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/geometry2/tf2_geometry_msgs
 
-//The directory containing a CMake configuration file for tf2_geometry_msgs.
-tf2_geometry_msgs_DIR:PATH=/home/pi/git/robo_lape/devel/share/tf2_geometry_msgs/cmake
+tf2_geometry_msgs_DIR:PATH=
 
 //Value Computed by CMake
 tf2_geometry_msgs_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2_geometry_msgs
@@ -674,6 +673,18 @@ tf2_ros_LIB_DEPENDS:STATIC=general;actionlib;general;/opt/ros/kinetic/lib/libmes
 
 //Value Computed by CMake
 tf2_ros_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2_ros
+
+//Value Computed by CMake
+tf2_sensor_msgs_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/geometry2/tf2_sensor_msgs
+
+//Value Computed by CMake
+tf2_sensor_msgs_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2_sensor_msgs
+
+//Value Computed by CMake
+tf2_tools_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/geometry2/tf2_tools
+
+//Value Computed by CMake
+tf2_tools_SOURCE_DIR:STATIC=/home/pi/git/robo_lape/src/geometry2/tf2_tools
 
 //Value Computed by CMake
 tf_BINARY_DIR:STATIC=/home/pi/git/robo_lape/build/geometry/tf
@@ -868,7 +879,7 @@ CMAKE_MODULE_LINKER_FLAGS_RELWITHDEBINFO-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_NM
 CMAKE_NM-ADVANCED:INTERNAL=1
 //number of local generators
-CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=32
+CMAKE_NUMBER_OF_MAKEFILES:INTERNAL=34
 //ADVANCED property for variable: CMAKE_OBJCOPY
 CMAKE_OBJCOPY-ADVANCED:INTERNAL=1
 //ADVANCED property for variable: CMAKE_OBJDUMP
