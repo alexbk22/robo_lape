@@ -5,7 +5,7 @@ xterm -e roscore &
 
 sleep 10
 
-#launching the IMU ROS driver:
+#launch the IMU ROS driver:
 xterm -hold -e roslaunch /home/pi/git/robo_lape/src/ros_bno055_driver/launch/bosch_bno055_driver.launch &
 
 sleep 5
