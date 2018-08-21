@@ -2,6 +2,7 @@
 int dist = 0;  //distancia
 #define nl 11
 int ifred[nl]; //leitura
+int bruta[nl];
 
 void setup() {
   //#####  Comunicacao serial
@@ -17,24 +18,39 @@ void setup() {
 
 void loop() {
 
-  for (int j = 0; j < nl; j++) {
-    ifred[j] = analogRead(A2);
-    if (ifred[j] == 1023) {
+  for (int i = 0; i < 30; i++) {
+    for (int j = 0; j < nl; j++) {
+      bruta[j] = analogRead(A2);
+
+      if (bruta[j] == 1023) {
         j = j - 1;
       } else {
-        if (ifred[j] < 80) {
+        if (bruta[j] < 80) {
           ifred[j] = 80;
-        } else if (ifred[j] > 450) {
+        } else if (bruta[j] > 450) {
           ifred[j] = 450;
+        } else {
+          ifred[j] = bruta[j];
         }
+
         ifred[j] = pow(3027.4 / ifred[j], 1.2134);
+        bruta[j] = pow(3027.4 / bruta[j], 1.2134);
       }
 
-    delay(3);
+      delay(3);
+    }
+
+    dist = mediana(ifred);
+    for (int j = 0; j < nl; j++) {
+      //Serial.print(i * nl + j);
+      //Serial.print(",");
+      Serial.print(bruta[j]);
+      Serial.print(",");
+      Serial.println(dist);
+    }
+    delay(200);
   }
-  dist = mediana(ifred);
-  Serial.println(dist);
-  delay(10);
+  delay(5000);
 }
 
 

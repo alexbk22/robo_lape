@@ -1,1 +1,10 @@
 operacao máxima: 70 minutos devido à função micros() utilizada para computar as diferenças de tempo para os encoders
+
+
+deslocamentos origens (ref robo - > laser)
+X = - 7    cm
+Y =   0    cm
+Z = + 54.5 cm
+
+rotação (ref robo -> laser)
+eixo Y rotacionado 90 graus em sentido horário

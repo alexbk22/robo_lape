@@ -68,7 +68,7 @@ int enc_E = 0;
 //#####  Sensores (portas analogicas), distancia
 int ifred[4][2] = {{0, 0}, {2, 0}, {4, 0}, {6, 0}}; //esquerda para a direita posicao dos sensores
 int menorDist = 5000;                               //inicialmente com valor alto para entrar no while
-int nl = 9;                                         //numero de leituras dos ifred, DEVE SER N IMPAR
+int nl = 11;                                         //numero de leituras dos ifred, DEVE SER N IMPAR
 bool caminho = true;                                   //true para a direita e false para a esquerda
 
 //##################################  SENSORES de COLISAO (BUMPERS)  ##################################
@@ -172,7 +172,7 @@ void loop() {
   stop();
   delay(3);
   ir_tras(velocidadeD, velocidadeE);
-  delay(3);
+  delay(20);
   stop();
 
   //#####  Delay de 1 segundo
@@ -226,7 +226,7 @@ void loop() {
       if (ler_bump(bump)) {
         //#####  parar rotacao dos motores
         stop();
-        delay(3);
+        delay(30);
         ir_tras(velocidadeD, velocidadeE);
         delay(200);
         stop();
@@ -453,14 +453,14 @@ bool esc_dir_servo() {
   int ang = 30;
   int md = 5000; //menor distancia
   int dist = 0;
-  for (int i = 30;  i <= 150; i += 30) {
+  for (int i = 30;  i <= 150; i += 10) {
     servo.write(i);
+    delay(350);
     dist = ler_dist_ifred (0);
     if (dist < md) {
       md = dist;
       ang = i;
     }
-    delay(250);
   }
 
   if (ang < 90)
