@@ -84,6 +84,10 @@ String data;
 //##################################  SERVO  ##################################
 Servo servo;
 
+String outData(int durationE,int durationD)
+{
+  return String(durationE) + "," + String(-durationD) + "," + String(micros());;
+}
 
 //###############################################################################
 //##################################  SETUP()  ##################################
@@ -152,13 +156,13 @@ void loop() {
     ajust_vel_f(velocidadeE, durationD, durationE);
 
     //#####  Dados
-    data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+    data = outData(durationE,durationD);
     Serial.println(data);
 
     //#####  identificar colisoes
     if (ler_bump(bump)) {
       stop();
-      data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+      data = outData(durationE,durationD);
       Serial.println(data);
       break;
     }
@@ -177,7 +181,7 @@ void loop() {
 
   //#####  Delay de 1 segundo
   for (int i = 0; i < 200; i++) {
-    data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+    data = outData(durationE,durationD);
     Serial.println(data);
     delay(5);
   }
@@ -214,7 +218,7 @@ void loop() {
       enc_E += durationE;
 
       //#####  Dados
-      data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+      data = outData(durationE,durationD);
       Serial.println(data);
       /*Serial.print("direita ");
         Serial.print("enc_D: ");
@@ -231,7 +235,7 @@ void loop() {
         delay(200);
         stop();
 
-        data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+        data = outData(durationE,durationD);
         Serial.println(data);
         break;
       }
@@ -268,7 +272,7 @@ void loop() {
       enc_E += durationE;
 
       //#####  Dados
-      data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+      data = outData(durationE,durationD);
       Serial.println(data);
       /*Serial.print("esquerda ");
         Serial.print("enc_D: ");
@@ -284,7 +288,7 @@ void loop() {
         delay(200);
         stop();
 
-        data = String(durationE) + "," + String(-durationD) + "," + String(micros());
+        data = outData(durationE,durationD);
         Serial.println(data);
         break;
       }
