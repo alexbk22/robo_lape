@@ -80,14 +80,13 @@ int bump[3] = {13, 12, 11}; // {porta digital}
 //##################################  STRING DE SAIDA (RESULTADOS A SEREM PROCESSADOS)  ##################################
 String data;
 
-
-//##################################  SERVO  ##################################
-Servo servo;
-
 String outData(int durationE,int durationD)
 {
   return String(durationE) + "," + String(-durationD) + "," + String(micros());;
 }
+
+//##################################  SERVO  ##################################
+Servo servo;
 
 //###############################################################################
 //##################################  SETUP()  ##################################
