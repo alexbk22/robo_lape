@@ -82,7 +82,9 @@ String data;
 
 String outData(int durationE,int durationD)
 {
-  return String(durationE) + "," + String(-durationD) + "," + String(micros());;
+  string out = String(durationE) + "," + String(-durationD) + "," + String(micros()); 
+
+  return out;
 }
 
 //##################################  SERVO  ##################################

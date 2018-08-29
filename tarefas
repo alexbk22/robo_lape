@@ -1,0 +1,18 @@
+1) conferir a saída dos encoders, 
+para não enviar strings inválidas
+    -Gravar um arquivo de testes
+    -fazer checagem de se é int
+
+2) Setar a TF do laser
+    -a priori usar as medidas aproximadas
+    (vide "detalhes tecnicos")
+    -
+
+3) concretizar a integração de IMU e encoders, 
+por meio do módulo do Filtro de Kalman
+    - Possivelmente setar a TF de ambos
+    -obter pose 6D em tempo real
+
+4) unir nuvens 2D e pose 6D pra produzir as
+nuvens 3D
+    -http://wiki.ros.org/laser_assembler/Tutorials/HowToAssembleLaserScans
