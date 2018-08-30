@@ -6,5 +6,10 @@ X = - 7    cm
 Y =   0    cm
 Z = + 54.5 cm
 
+" orientation increases as the child frame rotates counter-clockwise"
+
 rotação (ref robo -> laser)
-eixo Y rotacionado 90 graus em sentido horário
+eixo Y rotacionado 90 graus em sentido horário (-90 graus)
+
+q = quaternion_about_axis(-math.pi * 0.5, (0, 1, 0))
+t = (-0.07,0.0,0.545)
