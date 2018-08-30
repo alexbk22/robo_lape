@@ -57,7 +57,7 @@ float circum_base = PI * base;
 
 float ang_giro = 90;
 //double ppr_g = (((circum_base * (ang_giro / 10.0)) / 18.0) / (circum / ppr)) / 2;
-double ppr_g = 15;
+double ppr_g = 17;
 //double ppr_g = ang_giro / 10 * ppr / 18.0; //(ang_giro*ppr/360.0)/2.0
 int enc_D = 0;                  //para armazenar o numero de passos dos encoders e calcular os giros
 int enc_E = 0;
@@ -84,10 +84,6 @@ String data;
 //##################################  SERVO  ##################################
 Servo servo;
 
-String outData(int durationE,int durationD)
-{
-  return String(durationE) + "," + String(-durationD) + "," + String(micros());;
-}
 
 //###############################################################################
 //##################################  SETUP()  ##################################
@@ -156,14 +152,12 @@ void loop() {
     ajust_vel_f(velocidadeE, durationD, durationE);
 
     //#####  Dados
-    data = outData(durationE,durationD);
-    Serial.println(data);
+    outData(durationE, durationD);
 
     //#####  identificar colisoes
     if (ler_bump(bump)) {
       stop();
-      data = outData(durationE,durationD);
-      Serial.println(data);
+      outData(durationE, durationD);
       break;
     }
 
@@ -180,10 +174,12 @@ void loop() {
   stop();
 
   //#####  Delay de 1 segundo
-  for (int i = 0; i < 200; i++) {
-    data = outData(durationE,durationD);
-    Serial.println(data);
-    delay(5);
+  for (int i = 0; i < 5; i++) {
+    outData(durationE, durationD);
+    delay(200);
+    //#####  setando os encoders
+    durationD = 0;
+    durationE = 0;
   }
 
   //##### Escolher direcao a seguir
@@ -218,8 +214,7 @@ void loop() {
       enc_E += durationE;
 
       //#####  Dados
-      data = outData(durationE,durationD);
-      Serial.println(data);
+      outData(durationE, durationD);
       /*Serial.print("direita ");
         Serial.print("enc_D: ");
         Serial.print(enc_D);
@@ -234,9 +229,6 @@ void loop() {
         ir_tras(velocidadeD, velocidadeE);
         delay(200);
         stop();
-
-        data = outData(durationE,durationD);
-        Serial.println(data);
         break;
       }
 
@@ -272,8 +264,7 @@ void loop() {
       enc_E += durationE;
 
       //#####  Dados
-      data = outData(durationE,durationD);
-      Serial.println(data);
+      outData(durationE, durationD);
       /*Serial.print("esquerda ");
         Serial.print("enc_D: ");
         Serial.print(enc_D);
@@ -287,9 +278,6 @@ void loop() {
         ir_tras(velocidadeD, velocidadeE);
         delay(200);
         stop();
-
-        data = outData(durationE,durationD);
-        Serial.println(data);
         break;
       }
 
@@ -311,7 +299,7 @@ void loop() {
   ir_tras(velocidadeD, velocidadeE);
   delay(3);
   stop();
-  
+
   menorDist = 5000;
 
   delay(500);
@@ -324,6 +312,14 @@ void loop() {
 
 //#############################################################################
 //################################## FUNCOES ##################################
+
+//################# dados de saida
+void outData(int durationE, int durationD)
+{
+
+  Serial.println(String(durationE) + "," + String(-durationD) + "," + String(micros()));
+}
+
 
 
 //################# ajustar velocidade ir para frente
@@ -457,9 +453,9 @@ bool esc_dir_servo() {
   int ang = 30;
   int md = 5000; //menor distancia
   int dist = 0;
-  for (int i = 30;  i <= 150; i += 10) {
+  for (int i = 20;  i <= 160; i += 20) {
     servo.write(i);
-    delay(350);
+    delay(400);
     dist = ler_dist_ifred (0);
     if (dist < md) {
       md = dist;
