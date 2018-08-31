@@ -316,7 +316,7 @@ void loop() {
 //################# dados de saida
 void outData(int durationE, int durationD)
 {
-
+  
   Serial.println(String(durationE) + "," + String(-durationD) + "," + String(micros()));
 }
 
