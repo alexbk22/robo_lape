@@ -30,7 +30,7 @@ print "wheel odometer data"
 ################# CONSTANTES #########################
 
 #pulses per round
-ppr = 663
+ppr = 663.0
 
 #diam in cm, to be converted
 diam = 13.5 
