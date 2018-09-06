@@ -155,9 +155,18 @@ while not rospy.is_shutdown():
     # set the position
     odom.pose.pose = Pose(Point(x, y, 0.), Quaternion(*odom_quat))
 
+    odom.pose.covariance[0]  = 0.01
+    odom.pose.covariance[7]  = 0.01
+    odom.pose.covariance[14] = 0.01
+
+    odom.pose.covariance[21] = 0.1
+    odom.pose.covariance[28] = 0.1
+    odom.pose.covariance[35] = 0.1
+
     # set the velocity
     odom.child_frame_id = "base_link"
     odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
+
 
     # publish the message
     odom_pub.publish(odom)
