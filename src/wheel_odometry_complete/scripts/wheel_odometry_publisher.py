@@ -110,9 +110,11 @@ while not rospy.is_shutdown():
     vsum = vr+vl
 
     #angular part:
-    vth = vdif/base
+    # vth = vdif/(2*base)
 
-    delta_th = vth*varT
+    # # delta_th = vth*varT
+    # delta_th = vth
+    delta_th = vdif/(2*base)
 
     th0 = th
     th += delta_th
