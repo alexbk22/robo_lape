@@ -66,6 +66,9 @@ vth = 0.0
 vl = 0.0
 vr = 0.0
 
+dl = 0.0
+dr = 0.0
+
 current_time = rospy.Time.now()
 last_time = rospy.Time.now()
 
@@ -100,12 +103,17 @@ while not rospy.is_shutdown():
     if varT == 0.0:
         vl = 0.0
         vr = 0.0
+        dl = 0.0
+        dr = 0.0
     else:
+        dl = vdata[0]*dpp
+        dr = vdata[1]*dpp
         #left vel
-        vl = (vdata[0]*dpp)/varT
+        vl = dl/varT
         #right vel
-        vr = (vdata[1]*dpp)/varT
+        vr = dr/varT
 
+    ddif = dr-dl
     vdif = vr-vl
     vsum = vr+vl
 
@@ -114,7 +122,7 @@ while not rospy.is_shutdown():
 
     # # delta_th = vth*varT
     # delta_th = vth
-    delta_th = vdif/(2*base)
+    delta_th = ddif/(2*base)
 
     th0 = th
     th += delta_th
