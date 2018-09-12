@@ -86,9 +86,10 @@ while not rospy.is_shutdown():
     data = data[:-2].split(',')
     if len(data) == 3:
         if data[0] != '' and data[1] != '' and data[2] != '':
-            vdata = map(int,data)
-            #print vdata
-
+            try:
+                vdata = map(int,data)
+            except:
+                vdata = [0.0,0.0,0.0]
     
     #vdata = [10,20,1000]
 
