@@ -30,7 +30,7 @@ print "wheel odometer data"
 ################# CONSTANTES #########################
 
 #pulses per round
-ppr = 663
+ppr = 663.0
 
 #diam in cm, to be converted
 diam = 13.5 
@@ -66,6 +66,9 @@ vth = 0.0
 vl = 0.0
 vr = 0.0
 
+dl = 0.0
+dr = 0.0
+
 current_time = rospy.Time.now()
 last_time = rospy.Time.now()
 
@@ -83,9 +86,10 @@ while not rospy.is_shutdown():
     data = data[:-2].split(',')
     if len(data) == 3:
         if data[0] != '' and data[1] != '' and data[2] != '':
-            vdata = map(int,data)
-            #print vdata
-
+            try:
+                vdata = map(int,data)
+            except:
+                vdata = [0.0,0.0,0.0]
     
     #vdata = [10,20,1000]
 
@@ -100,19 +104,26 @@ while not rospy.is_shutdown():
     if varT == 0.0:
         vl = 0.0
         vr = 0.0
+        dl = 0.0
+        dr = 0.0
     else:
+        dl = vdata[0]*dpp
+        dr = vdata[1]*dpp
         #left vel
-        vl = (vdata[0]*dpp)/varT
+        vl = dl/varT
         #right vel
-        vr = (vdata[1]*dpp)/varT
+        vr = dr/varT
 
+    ddif = dr-dl
     vdif = vr-vl
     vsum = vr+vl
 
     #angular part:
-    vth = vdif/base
+    # vth = vdif/(2*base)
 
-    delta_th = vth*varT
+    # # delta_th = vth*varT
+    # delta_th = vth
+    delta_th = ddif/(2*base)
 
     th0 = th
     th += delta_th
@@ -155,9 +166,18 @@ while not rospy.is_shutdown():
     # set the position
     odom.pose.pose = Pose(Point(x, y, 0.), Quaternion(*odom_quat))
 
+    odom.pose.covariance[0]  = 0.01
+    odom.pose.covariance[7]  = 0.01
+    odom.pose.covariance[14] = 0.01
+
+    odom.pose.covariance[21] = 0.1
+    odom.pose.covariance[28] = 0.1
+    odom.pose.covariance[35] = 0.1
+
     # set the velocity
     odom.child_frame_id = "base_link"
     odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
+
 
     # publish the message
     odom_pub.publish(odom)
