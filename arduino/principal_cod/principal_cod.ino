@@ -57,7 +57,7 @@ float circum_base = PI * base;
 
 float ang_giro = 90;
 //double ppr_g = (((circum_base * (ang_giro / 10.0)) / 18.0) / (circum / ppr)) / 2;
-double ppr_g = 17;
+double ppr_g = 20;
 //double ppr_g = ang_giro / 10 * ppr / 18.0; //(ang_giro*ppr/360.0)/2.0
 int enc_D = 0;                  //para armazenar o numero de passos dos encoders e calcular os giros
 int enc_E = 0;
@@ -170,7 +170,7 @@ void loop() {
   stop();
   delay(3);
   ir_tras(velocidadeD, velocidadeE);
-  delay(20);
+  delay(50);
   stop();
 
   //#####  Delay de 1 segundo
@@ -181,6 +181,12 @@ void loop() {
     durationD = 0;
     durationE = 0;
   }
+  
+  stop();
+  delay(3);
+  ir_tras(velocidadeD, velocidadeE);
+  delay(200);
+  stop();
 
   //##### Escolher direcao a seguir
   caminho = esc_dir_servo();
@@ -316,7 +322,7 @@ void loop() {
 //################# dados de saida
 void outData(int durationE, int durationD)
 {
-  
+
   Serial.println(String(durationE) + "," + String(-durationD) + "," + String(micros()));
 }
 
@@ -326,9 +332,9 @@ void outData(int durationE, int durationD)
 void ajust_vel_f(int& velocidadeE, int& durationD, int& durationE) {
   int dif = durationD + durationE;
   if (dif < -1)
-    velocidadeE += -dif / 2;
+    velocidadeE += -dif;// / 2;
   else if (dif > 1)
-    velocidadeE += -dif / 2;
+    velocidadeE += -dif;// / 2;
 
   if (velocidadeE > vel_max)
     velocidadeE = vel_max;
@@ -466,7 +472,8 @@ bool esc_dir_servo() {
   if (ang < 90)
     return false;
   else if (ang > 90)
-    return true;
+    servo.write(90);
+  return true;
 
 }
 
