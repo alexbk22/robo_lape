@@ -1,8 +1,0 @@
-prefix=/home/pi/git/robo_lape/install
-
-Name: tf2_sensor_msgs
-Description: Description of tf2_sensor_msgs
-Version: 0.6.3
-Cflags: -I/home/pi/git/robo_lape/install/include -I/usr/include/eigen3
-Libs: -L/home/pi/git/robo_lape/install/lib 
-Requires: sensor_msgs tf2_ros tf2

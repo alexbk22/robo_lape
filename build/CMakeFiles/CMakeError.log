@@ -1,24 +1,25 @@
 Determining if the pthread_create exist failed with the following output:
-Change Dir: /home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp
+Change Dir: /home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_25996/fast"
-/usr/bin/make -f CMakeFiles/cmTC_25996.dir/build.make CMakeFiles/cmTC_25996.dir/build
-make[1]: Entering directory '/home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_25996.dir/CheckSymbolExists.c.o
-/usr/bin/cc     -o CMakeFiles/cmTC_25996.dir/CheckSymbolExists.c.o   -c /home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
-Linking C executable cmTC_25996
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25996.dir/link.txt --verbose=1
-/usr/bin/cc       CMakeFiles/cmTC_25996.dir/CheckSymbolExists.c.o  -o cmTC_25996 -rdynamic 
-CMakeFiles/cmTC_25996.dir/CheckSymbolExists.c.o: In function `main':
-CheckSymbolExists.c:(.text+0x38): undefined reference to `pthread_create'
+Run Build Command:"/usr/bin/make" "cmTC_48aea/fast"
+/usr/bin/make -f CMakeFiles/cmTC_48aea.dir/build.make CMakeFiles/cmTC_48aea.dir/build
+make[1]: Entering directory '/home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_48aea.dir/CheckSymbolExists.c.o
+/usr/bin/cc     -o CMakeFiles/cmTC_48aea.dir/CheckSymbolExists.c.o   -c /home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c
+Linking C executable cmTC_48aea
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_48aea.dir/link.txt --verbose=1
+/usr/bin/cc       CMakeFiles/cmTC_48aea.dir/CheckSymbolExists.c.o  -o cmTC_48aea -rdynamic 
+CMakeFiles/cmTC_48aea.dir/CheckSymbolExists.c.o: In function `main':
+CheckSymbolExists.c:(.text+0xe): undefined reference to `pthread_create'
+CheckSymbolExists.c:(.text+0x12): undefined reference to `pthread_create'
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_25996.dir/build.make:97: recipe for target 'cmTC_25996' failed
-make[1]: *** [cmTC_25996] Error 1
-make[1]: Leaving directory '/home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_25996/fast' failed
-make: *** [cmTC_25996/fast] Error 2
+CMakeFiles/cmTC_48aea.dir/build.make:97: recipe for target 'cmTC_48aea' failed
+make[1]: *** [cmTC_48aea] Error 1
+make[1]: Leaving directory '/home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_48aea/fast' failed
+make: *** [cmTC_48aea/fast] Error 2
 
-File /home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
+File /home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp/CheckSymbolExists.c:
 /* */
 #include <pthread.h>
 
@@ -34,22 +35,22 @@ int main(int argc, char** argv)
 }
 
 Determining if the function pthread_create exists in the pthreads failed with the following output:
-Change Dir: /home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp
+Change Dir: /home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp
 
-Run Build Command:"/usr/bin/make" "cmTC_07c6a/fast"
-/usr/bin/make -f CMakeFiles/cmTC_07c6a.dir/build.make CMakeFiles/cmTC_07c6a.dir/build
-make[1]: Entering directory '/home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp'
-Building C object CMakeFiles/cmTC_07c6a.dir/CheckFunctionExists.c.o
-/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_07c6a.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.7/Modules/CheckFunctionExists.c
-Linking C executable cmTC_07c6a
-/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_07c6a.dir/link.txt --verbose=1
-/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_07c6a.dir/CheckFunctionExists.c.o  -o cmTC_07c6a -rdynamic -lpthreads 
+Run Build Command:"/usr/bin/make" "cmTC_aaed9/fast"
+/usr/bin/make -f CMakeFiles/cmTC_aaed9.dir/build.make CMakeFiles/cmTC_aaed9.dir/build
+make[1]: Entering directory '/home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp'
+Building C object CMakeFiles/cmTC_aaed9.dir/CheckFunctionExists.c.o
+/usr/bin/cc    -DCHECK_FUNCTION_EXISTS=pthread_create   -o CMakeFiles/cmTC_aaed9.dir/CheckFunctionExists.c.o   -c /usr/share/cmake-3.5/Modules/CheckFunctionExists.c
+Linking C executable cmTC_aaed9
+/usr/bin/cmake -E cmake_link_script CMakeFiles/cmTC_aaed9.dir/link.txt --verbose=1
+/usr/bin/cc   -DCHECK_FUNCTION_EXISTS=pthread_create    CMakeFiles/cmTC_aaed9.dir/CheckFunctionExists.c.o  -o cmTC_aaed9 -rdynamic -lpthreads 
 /usr/bin/ld: cannot find -lpthreads
 collect2: error: ld returned 1 exit status
-CMakeFiles/cmTC_07c6a.dir/build.make:97: recipe for target 'cmTC_07c6a' failed
-make[1]: *** [cmTC_07c6a] Error 1
-make[1]: Leaving directory '/home/pi/git/robo_lape/build/CMakeFiles/CMakeTmp'
-Makefile:126: recipe for target 'cmTC_07c6a/fast' failed
-make: *** [cmTC_07c6a/fast] Error 2
+CMakeFiles/cmTC_aaed9.dir/build.make:97: recipe for target 'cmTC_aaed9' failed
+make[1]: *** [cmTC_aaed9] Error 1
+make[1]: Leaving directory '/home/ubuntu/git/robo_lape/build/CMakeFiles/CMakeTmp'
+Makefile:126: recipe for target 'cmTC_aaed9/fast' failed
+make: *** [cmTC_aaed9/fast] Error 2
 
 

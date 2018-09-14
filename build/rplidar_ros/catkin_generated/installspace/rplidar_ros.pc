@@ -1,8 +1,8 @@
-prefix=/home/pi/git/robo_lape/install
+prefix=/home/ubuntu/git/robo_lape/install
 
 Name: rplidar_ros
 Description: Description of rplidar_ros
-Version: 1.7.0
+Version: 1.9.0
 Cflags: 
-Libs: -L/home/pi/git/robo_lape/install/lib 
+Libs: -L/home/ubuntu/git/robo_lape/install/lib 
 Requires: 

@@ -1,12 +1,14 @@
 #!/bin/dash
 
 #launch roscore
-xterm -e roscore &
+#xterm -e roscore &
 
-sleep 10
+echo ubuntu | sudo -S chmod 666 /dev/ttyUSB0
+
+# sleep 10
 
 #launch the IMU ROS driver:
-xterm -hold -e roslaunch /home/pi/git/robo_lape/src/ros_bno055_driver/launch/bosch_bno055_driver.launch &
+xterm -hold -e roslaunch /home/ubuntu/git/robo_lape/src/ros_bno055_driver/launch/bosch_bno055_driver.launch &
 
 sleep 5
 

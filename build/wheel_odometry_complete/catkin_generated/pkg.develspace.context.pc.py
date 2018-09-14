@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "wheel_odometry_complete"
-PROJECT_SPACE_DIR = "/home/pi/git/robo_lape/devel"
+PROJECT_SPACE_DIR = "/home/ubuntu/git/robo_lape/devel"
 PROJECT_VERSION = "0.1.0"

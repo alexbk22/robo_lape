@@ -166,13 +166,13 @@ while not rospy.is_shutdown():
     # set the position
     odom.pose.pose = Pose(Point(x, y, 0.), Quaternion(*odom_quat))
 
-    odom.pose.covariance[0]  = 0.01
-    odom.pose.covariance[7]  = 0.01
-    odom.pose.covariance[14] = 0.01
+    odom.pose.covariance[0]  = 1.0
+    odom.pose.covariance[7]  = 1.0
+    odom.pose.covariance[14] = 1.0
 
-    odom.pose.covariance[21] = 0.1
-    odom.pose.covariance[28] = 0.1
-    odom.pose.covariance[35] = 0.1
+    odom.pose.covariance[21] = 1.0
+    odom.pose.covariance[28] = 1.0
+    odom.pose.covariance[35] = 1.0
 
     # set the velocity
     odom.child_frame_id = "base_link"

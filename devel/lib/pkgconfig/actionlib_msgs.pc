@@ -1,8 +1,0 @@
-prefix=/home/pi/git/robo_lape/devel
-
-Name: actionlib_msgs
-Description: Description of actionlib_msgs
-Version: 1.12.6
-Cflags: -I/home/pi/git/robo_lape/devel/include
-Libs: -L/home/pi/git/robo_lape/devel/lib 
-Requires: message_runtime std_msgs

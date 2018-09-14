@@ -1,8 +1,8 @@
-# Install script for directory: /home/pi/git/robo_lape/src/wheel_odometry_complete
+# Install script for directory: /home/ubuntu/git/robo_lape/src/wheel_odometry_complete
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
-  set(CMAKE_INSTALL_PREFIX "/home/pi/git/robo_lape/install")
+  set(CMAKE_INSTALL_PREFIX "/home/ubuntu/git/robo_lape/install")
 endif()
 string(REGEX REPLACE "/$" "" CMAKE_INSTALL_PREFIX "${CMAKE_INSTALL_PREFIX}")
 
@@ -32,18 +32,18 @@ if(NOT DEFINED CMAKE_INSTALL_SO_NO_EXE)
   set(CMAKE_INSTALL_SO_NO_EXE "1")
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/pi/git/robo_lape/build/wheel_odometry_complete/catkin_generated/installspace/wheel_odometry_complete.pc")
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/lib/pkgconfig" TYPE FILE FILES "/home/ubuntu/git/robo_lape/build/wheel_odometry_complete/catkin_generated/installspace/wheel_odometry_complete.pc")
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
   file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/wheel_odometry_complete/cmake" TYPE FILE FILES
-    "/home/pi/git/robo_lape/build/wheel_odometry_complete/catkin_generated/installspace/wheel_odometry_completeConfig.cmake"
-    "/home/pi/git/robo_lape/build/wheel_odometry_complete/catkin_generated/installspace/wheel_odometry_completeConfig-version.cmake"
+    "/home/ubuntu/git/robo_lape/build/wheel_odometry_complete/catkin_generated/installspace/wheel_odometry_completeConfig.cmake"
+    "/home/ubuntu/git/robo_lape/build/wheel_odometry_complete/catkin_generated/installspace/wheel_odometry_completeConfig-version.cmake"
     )
 endif()
 
-if("${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified" OR NOT CMAKE_INSTALL_COMPONENT)
-  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/wheel_odometry_complete" TYPE FILE FILES "/home/pi/git/robo_lape/src/wheel_odometry_complete/package.xml")
+if(NOT CMAKE_INSTALL_COMPONENT OR "${CMAKE_INSTALL_COMPONENT}" STREQUAL "Unspecified")
+  file(INSTALL DESTINATION "${CMAKE_INSTALL_PREFIX}/share/wheel_odometry_complete" TYPE FILE FILES "/home/ubuntu/git/robo_lape/src/wheel_odometry_complete/package.xml")
 endif()
 

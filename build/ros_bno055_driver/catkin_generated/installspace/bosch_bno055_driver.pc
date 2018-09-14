@@ -1,8 +1,8 @@
-prefix=/home/pi/git/robo_lape/install
+prefix=/home/ubuntu/git/robo_lape/install
 
 Name: bosch_bno055_driver
 Description: Description of bosch_bno055_driver
 Version: 0.0.1
 Cflags: 
-Libs: -L/home/pi/git/robo_lape/install/lib 
+Libs: -L/home/ubuntu/git/robo_lape/install/lib 
 Requires: 

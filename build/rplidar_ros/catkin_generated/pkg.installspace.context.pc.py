@@ -4,5 +4,5 @@ PROJECT_PKG_CONFIG_INCLUDE_DIRS = "".split(';') if "" != "" else []
 PROJECT_CATKIN_DEPENDS = "".replace(';', ' ')
 PKG_CONFIG_LIBRARIES_WITH_PREFIX = "".split(';') if "" != "" else []
 PROJECT_NAME = "rplidar_ros"
-PROJECT_SPACE_DIR = "/home/pi/git/robo_lape/install"
-PROJECT_VERSION = "1.7.0"
+PROJECT_SPACE_DIR = "/home/ubuntu/git/robo_lape/install"
+PROJECT_VERSION = "1.9.0"

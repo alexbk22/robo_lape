@@ -1,8 +1,0 @@
-prefix=/home/pi/git/robo_lape/install
-
-Name: tf2_ros
-Description: Description of tf2_ros
-Version: 0.6.3
-Cflags: -I/home/pi/git/robo_lape/install/include
-Libs: -L/home/pi/git/robo_lape/install/lib -ltf2_ros
-Requires: actionlib actionlib_msgs geometry_msgs message_filters roscpp rosgraph tf2 tf2_msgs tf2_py

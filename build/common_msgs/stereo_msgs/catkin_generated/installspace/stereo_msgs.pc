@@ -1,8 +1,0 @@
-prefix=/home/pi/git/robo_lape/install
-
-Name: stereo_msgs
-Description: Description of stereo_msgs
-Version: 1.12.6
-Cflags: -I/home/pi/git/robo_lape/install/include
-Libs: -L/home/pi/git/robo_lape/install/lib 
-Requires: message_runtime sensor_msgs std_msgs
