@@ -114,8 +114,8 @@ while not rospy.is_shutdown():
         #right vel
         vr = dr/varT
 
-    vdif = vr-vl
-    vsum = vr+vl
+    vdiff = vr-vl
+    vsum =  vr+vl
 
     vm  = vsum * 0.5
     vth = vdiff * 0.5
