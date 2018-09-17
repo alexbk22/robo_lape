@@ -16,3 +16,7 @@ por meio do módulo do Filtro de Kalman
 4) unir nuvens 2D e pose 6D pra produzir as
 nuvens 3D
     -http://wiki.ros.org/laser_assembler/Tutorials/HowToAssembleLaserScans
+
+#########################################################################################
+
+verificar as frequencias para ser possível 
