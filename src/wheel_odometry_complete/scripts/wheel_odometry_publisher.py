@@ -17,7 +17,12 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
 from numpy.ma.core import abs
 
-arduino = serial.Serial(sys.argv[1],sys.argv[2])
+
+try:
+    arduino = serial.Serial(sys.argv[1],sys.argv[2])
+except:
+    print "could not open Arduino Board at "+sys.argv[1]
+    sys.exit(-1)
 
 rospy.init_node('odometry_publisher')
 
@@ -89,6 +94,7 @@ while not rospy.is_shutdown():
             try:
                 vdata = map(int,data)
             except:
+                print "exception"
                 vdata = [0.0,0.0,0.0]
     
     #vdata = [10,20,1000]
@@ -178,6 +184,13 @@ while not rospy.is_shutdown():
     odom.child_frame_id = "base_link"
     odom.twist.twist = Twist(Vector3(vx, vy, 0), Vector3(0, 0, vth))
 
+    odom.twist.covariance[0]  = 1.0
+    odom.twist.covariance[7]  = 1.0
+    odom.twist.covariance[14] = 1.0
+
+    odom.twist.covariance[21] = 1.0
+    odom.twist.covariance[28] = 1.0
+    odom.twist.covariance[35] = 1.0
 
     # publish the message
     odom_pub.publish(odom)

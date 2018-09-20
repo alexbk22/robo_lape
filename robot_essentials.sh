@@ -7,6 +7,12 @@ echo ubuntu | sudo -S chmod 666 /dev/ttyUSB0
 
 # sleep 10
 
+#launch the static tfs:
+roslaunch /home/ubuntu/git/robo_lape/launchfiles/tf_base_imu.launch &
+sleep 1
+roslaunch /home/ubuntu/git/robo_lape/launchfiles/tf_base_laser.launch &
+sleep 1
+
 #launch the IMU ROS driver:
 xterm -hold -e roslaunch /home/ubuntu/git/robo_lape/src/ros_bno055_driver/launch/bosch_bno055_driver.launch &
 

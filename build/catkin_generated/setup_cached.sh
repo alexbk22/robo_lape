@@ -7,7 +7,4 @@
 # new environment variables
 
 # modified environment variables
-export LD_LIBRARY_PATH="/opt/ros/kinetic/lib:/opt/ros/kinetic/lib/arm-linux-gnueabihf"
-export PKG_CONFIG_PATH="/opt/ros/kinetic/lib/pkgconfig:/opt/ros/kinetic/lib/arm-linux-gnueabihf/pkgconfig"
 export PWD="/home/ubuntu/git/robo_lape/build"
-export ROS_PACKAGE_PATH="/home/ubuntu/git/robo_lape/src:/opt/ros/kinetic/share"

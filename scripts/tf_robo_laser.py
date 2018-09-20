@@ -12,6 +12,7 @@ def laser_relative_pose():
     rospy.init_node('laser_relative_pose', anonymous=False)
 
     quat = tf.transformations.quaternion_about_axis(-math.pi * 0.5, (0, 1, 0))
+    print quat
     translation = (-0.07,0.0,0.545)
     br = tf.TransformBroadcaster()
     r = rospy.Rate(0.1)

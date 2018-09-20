@@ -17,12 +17,16 @@ from nav_msgs.msg import Odometry
 from geometry_msgs.msg import Point, Pose, Quaternion, Twist, Vector3
 from numpy.ma.core import abs
 
-arduino = serial.Serial(sys.argv[1],sys.argv[2])
+try:
+    arduino = serial.Serial(sys.argv[1],sys.argv[2])
+except:
+    print "could not open Arduino Board at "+sys.argv[1]
+    sys.exit(-1)
 
 rospy.init_node('odometry_publisher')
 
 odom_pub = rospy.Publisher("odom", Odometry, queue_size=50)
-odom_broadcaster = tf.TransformBroadcaster()
+# odom_broadcaster = tf.TransformBroadcaster()
 
 print "wheel odometer data"
 
@@ -70,7 +74,7 @@ dl = 0.0
 dr = 0.0
 
 current_time = rospy.Time.now()
-last_time = rospy.Time.now()
+# last_time = rospy.Time.now()
 
 time2_0 = 0.0
 time2   = 0.0
@@ -81,7 +85,7 @@ vdata = [0.0,0.0,0.0]
 rate = rospy.Rate(60)
 while not rospy.is_shutdown():
     current_time = rospy.Time.now()
-
+    
     data = str(arduino.readline())
     data = data[:-2].split(',')
     if len(data) == 3:
@@ -89,6 +93,7 @@ while not rospy.is_shutdown():
             try:
                 vdata = map(int,data)
             except:
+                print "except"
                 vdata = [0.0,0.0,0.0]
     
     #vdata = [10,20,1000]
@@ -120,4 +125,32 @@ while not rospy.is_shutdown():
     vm  = vsum * 0.5
     vth = vdiff * 0.5
 
-#FINISH THE CODE, PUBLISH AS TWIST DATA
+    # next, we'll publish the odometry message over ROS
+    odom = Odometry()
+    odom.header.stamp = current_time
+    odom.header.frame_id = "odom_fake"
+
+    odom.pose.pose = Pose(Vector3(0.0,0.0,0.0),Quaternion(0.0,0.0,0.0,1.0))
+
+    odom.pose.covariance[0]  = 1.0
+    odom.pose.covariance[7]  = 1.0
+    odom.pose.covariance[14] = 1.0
+
+    odom.pose.covariance[21] = 1.0
+    odom.pose.covariance[28] = 1.0
+    odom.pose.covariance[35] = 1.0
+
+    odom.twist.twist = Twist(Vector3(vm, 0.0, 0.0), Vector3(0.0, 0.0, vth))
+
+
+    odom.twist.covariance[0]  = 0.001
+    odom.twist.covariance[7]  = 0.000001
+    odom.twist.covariance[14] = 1.0
+
+    odom.twist.covariance[21] = 1.0
+    odom.twist.covariance[28] = 1.0
+    odom.twist.covariance[35] = 0.01
+
+    odom_pub.publish(odom)
+    rate.sleep()
+
