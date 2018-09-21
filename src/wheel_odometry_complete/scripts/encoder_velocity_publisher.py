@@ -74,7 +74,7 @@ dl = 0.0
 dr = 0.0
 
 current_time = rospy.Time.now()
-# last_time = rospy.Time.now()
+last_time = rospy.Time.now()
 
 time2_0 = 0.0
 time2   = 0.0
@@ -151,6 +151,9 @@ while not rospy.is_shutdown():
     odom.twist.covariance[28] = 1.0
     odom.twist.covariance[35] = 0.01
 
+    print vth
+
+    last_time = current_time
     odom_pub.publish(odom)
     rate.sleep()
 

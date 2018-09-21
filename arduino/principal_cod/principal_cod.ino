@@ -57,7 +57,7 @@ float circum_base = PI * base;
 
 float ang_giro = 90;
 //double ppr_g = (((circum_base * (ang_giro / 10.0)) / 18.0) / (circum / ppr)) / 2;
-double ppr_g = 20;
+double ppr_g = 17;
 //double ppr_g = ang_giro / 10 * ppr / 18.0; //(ang_giro*ppr/360.0)/2.0
 int enc_D = 0;                  //para armazenar o numero de passos dos encoders e calcular os giros
 int enc_E = 0;
@@ -158,6 +158,7 @@ void loop() {
     if (ler_bump(bump)) {
       stop();
       outData(durationE, durationD);
+      delay(3000);
       break;
     }
 
@@ -168,7 +169,7 @@ void loop() {
 
   //#####  parar rotacao dos motores
   stop();
-  delay(3);
+  delay(40);
   ir_tras(velocidadeD, velocidadeE);
   delay(50);
   stop();
@@ -183,7 +184,7 @@ void loop() {
   }
   
   stop();
-  delay(3);
+  delay(40);
   ir_tras(velocidadeD, velocidadeE);
   delay(200);
   stop();
@@ -301,7 +302,7 @@ void loop() {
 
   //#####  parar rotacao dos motores
   stop();
-  delay(3);
+  delay(40);
   ir_tras(velocidadeD, velocidadeE);
   delay(3);
   stop();

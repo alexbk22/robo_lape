@@ -22,7 +22,7 @@ xterm -e roslaunch rplidar_ros rplidar.launch &
 
 sleep 5 
 
-xterm -hold -e rosrun wheel_odometry_complete wheel_odometry_publisher.py "/dev/ttyACM0" 115200 &
+xterm -hold -e python /home/ubuntu/git/robo_lape/src/wheel_odometry_complete/scripts/encoder_velocity_publisher.py "/dev/ttyACM0" 115200 &
 
 sleep 5
 
