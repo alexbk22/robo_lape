@@ -1,4 +1,34 @@
-#!/bin/dash
+#!/bin/bash
 
-roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_imu2.launch
-roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_laser.launch
+source /home/kaue/catkin_ws/devel/setup.bash
+
+# rviz &
+
+xterm -e roscore &
+
+sleep 5
+
+rosrun rviz rviz -d /home/kaue/git/robo_lape/parameterfiles/rviz_config.rviz &
+
+sleep 5
+
+rosparam set /use_sim_time true
+
+xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_imu.launch &
+xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_laser.launch &
+xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/laser_scan_assembler.launch &
+
+sleep 2
+
+xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/ekf_template.launch &
+
+sleep 10
+
+rosbag play --clock /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
+# rosbag play /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
+
+sleep 2
+
+python /home/kaue/git/robo_lape/scripts/laser_assembler_service.py
+
+/bin/bash

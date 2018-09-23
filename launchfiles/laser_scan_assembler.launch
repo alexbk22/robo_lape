@@ -4,6 +4,7 @@
     <!-- <remap from="scan" to="tilt_scan"/> -->
     <!-- <remap from="scan" to="scan_filtered"/> -->
     <param name="max_scans" type="int" value="400" />
-    <param name="fixed_frame" type="string" value="base_link" />
+    <!-- <param name="fixed_frame" type="string" value="base_link" /> -->
+    <param name="fixed_frame" type="string" value="odom" />
   </node>
 </launch>
