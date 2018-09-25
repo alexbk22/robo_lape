@@ -6,13 +6,17 @@ source /home/kaue/catkin_ws/devel/setup.bash
 
 xterm -e roscore &
 
-sleep 5
+rosparam set /use_sim_time true
+
+sleep 10
 
 rosrun rviz rviz -d /home/kaue/git/robo_lape/parameterfiles/rviz_config.rviz &
 
-sleep 5
+# sleep 5
 
-rosparam set /use_sim_time true
+# roslaunch /home/kaue/catkin_ws/src/hector_laserscan_to_pointcloud/launch/laserscan_to_pointcloud_shadow_filtered.launch &
+
+sleep 5
 
 xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_imu.launch &
 xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_laser.launch &
@@ -22,9 +26,9 @@ sleep 2
 
 xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/ekf_template.launch &
 
-sleep 10
+sleep 2
 
-rosbag play --clock /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
+rosbag play -d 8 --clock /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
 # rosbag play /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
 
 sleep 2

@@ -9,7 +9,7 @@ try:
     print rospy.Time(0,0)
     print rospy.get_rostime()
     print rospy.Time.now()
-    resp = assemble_scans(rospy.Time(0,0),rospy.get_rostime())
+    resp = assemble_scans(rospy.Time(0,0),rospy.Time.now())
     print "Got cloud with %u points" % len(resp.cloud.points)
 except rospy.ServiceException, e:
     print "Service call failed: %s"%e
