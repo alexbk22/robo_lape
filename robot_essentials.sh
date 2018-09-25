@@ -16,6 +16,8 @@ sleep 1
 #launch the IMU ROS driver:
 xterm -hold -e roslaunch /home/ubuntu/git/robo_lape/src/ros_bno055_driver/launch/bosch_bno055_driver.launch &
 
+xterm -hold -e rostopic echo /calib &
+
 sleep 5
 
 xterm -e roslaunch rplidar_ros rplidar.launch &
@@ -26,6 +28,11 @@ xterm -hold -e python /home/ubuntu/git/robo_lape/src/wheel_odometry_complete/scr
 
 sleep 5
 
+xterm -hold -e roslaunch /home/ubuntu/git/robo_lape/launchfiles/laser_scan_assembler.launch
+
+sleep 5
+
+xterm -hold -e roslaunch /home/ubuntu/git/robo_lape/launchfiles/ekf_template.launch &
 #xterm -e "cd ~/bagfiles && rosbag record odom scan imu/data tf" &
 
 echo "fim"
