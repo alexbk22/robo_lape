@@ -1,14 +1,16 @@
 #!/bin/bash
 
+xterm -e roscore &
+
+sleep 10
+
 source /home/kaue/catkin_ws/devel/setup.bash
 
 # rviz &
 
-xterm -e roscore &
-
 rosparam set /use_sim_time true
 
-sleep 10
+# sleep 10
 
 rosrun rviz rviz -d /home/kaue/git/robo_lape/parameterfiles/rviz_config.rviz &
 
