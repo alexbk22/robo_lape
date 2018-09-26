@@ -1,0 +1,7 @@
+[Desktop Entry]
+Name=STOP RECORD
+Type=Application
+Exec=bash /home/ubuntu/git/robo_lape/scripts/stop_record.sh
+Terminal=false
+StartupNotify=false
+GenericName=kill_rosbag_record

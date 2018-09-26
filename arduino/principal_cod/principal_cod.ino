@@ -40,7 +40,7 @@ int M1 = 4;  //M1 Direction Control
 int M2 = 7;  //M2 Direction Control
 
 //#####  Setar velocidade dos motores
-int vel_max = 150;                        //velocidade maxima para ambos os motores
+int vel_max = 130;                        //velocidade maxima para ambos os motores
 int vel_min = vel_max / 2;               //velocidade minima para o motor esquerdo
 int velocidadeE = vel_max - vel_max / 4; //questao de rotacao dos motores, o direito esta girando mais lento
 int velocidadeD = vel_max;
@@ -63,6 +63,9 @@ int enc_D = 0;                  //para armazenar o numero de passos dos encoders
 int enc_E = 0;
 
 
+//#####  Delay de freio
+int delay_freio = 100;  //em milisegundos
+
 //##################################  SENSORES INFRAVERMELHO  ##################################
 
 //#####  Sensores (portas analogicas), distancia
@@ -83,6 +86,7 @@ String data;
 
 //##################################  SERVO  ##################################
 Servo servo;
+
 
 
 //###############################################################################
@@ -169,7 +173,7 @@ void loop() {
 
   //#####  parar rotacao dos motores
   stop();
-  delay(40);
+  delay(delay_freio);
   ir_tras(velocidadeD, velocidadeE);
   delay(50);
   stop();
@@ -184,7 +188,7 @@ void loop() {
   }
   
   stop();
-  delay(40);
+  delay(delay_freio);
   ir_tras(velocidadeD, velocidadeE);
   delay(200);
   stop();
@@ -302,9 +306,9 @@ void loop() {
 
   //#####  parar rotacao dos motores
   stop();
-  delay(40);
+  delay(delay_freio);
   ir_tras(velocidadeD, velocidadeE);
-  delay(3);
+  delay(10);
   stop();
 
   menorDist = 5000;
@@ -450,7 +454,7 @@ int mediana (int vet[]) {
     vet[i] = mn;
   }
 
-  return vet[n - m];
+  return vet[n + m];
 }
 
 
@@ -584,4 +588,3 @@ void ir_dir (char a, char b)
   analogWrite (E2, b);
   digitalWrite(M2, LOW);
 }
-

@@ -151,7 +151,7 @@ while not rospy.is_shutdown():
     odom.twist.covariance[28] = 1.0
     odom.twist.covariance[35] = 0.01
 
-    print vth
+    # print vth
 
     last_time = current_time
     odom_pub.publish(odom)

@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=DRIVERS
+Type=Application
+Exec=bash robot_essentials.sh
+Terminal=false
+StartupNotify=false
+Path=/home/ubuntu/git/robo_lape
+GenericName=kill_rosbag_record
