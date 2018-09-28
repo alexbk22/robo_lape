@@ -20,20 +20,20 @@ rosrun rviz rviz -d /home/kaue/git/robo_lape/parameterfiles/rviz_config.rviz &
 
 sleep 5
 
-xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_imu.launch &
-xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_laser.launch &
-xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/laser_scan_assembler.launch &
+xterm -hold -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_imu.launch &
+xterm -hold -e roslaunch /home/kaue/git/robo_lape/launchfiles/tf_base_laser.launch &
+xterm -hold -e roslaunch /home/kaue/git/robo_lape/launchfiles/laser_scan_assembler.launch &
 
 sleep 2
 
-xterm -e roslaunch /home/kaue/git/robo_lape/launchfiles/ekf_template.launch &
+xterm -hold -e roslaunch /home/kaue/git/robo_lape/launchfiles/ekf_template.launch &
 
 sleep 2
 
-rosbag play -d 8 --clock /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
+rosbag play -k -d 8 --clock /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag &
 # rosbag play /home/kaue/git/robo_lape/rosbags/2018-09-20-19-57-08.bag
 
-sleep 2
+sleep 10
 
 python /home/kaue/git/robo_lape/scripts/laser_assembler_service.py
 
