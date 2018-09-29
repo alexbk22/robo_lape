@@ -1,9 +1,7 @@
 
 #!/bin/bash
 
-source /home/kaue/catkin_ws/devel/setup.bash
-# source /home/lape/catkin_ws/devel/setup.bash
-
+source /home/$USER/catkin_ws/devel/setup.bash
 
 rosnode kill -a
 
