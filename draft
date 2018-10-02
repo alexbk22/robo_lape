@@ -1,0 +1,13 @@
+rosservice call /assemble_scans {{begin: {secs: 1,nsecs: 0}},{end: {secs: 20,nsecs: 0}}}
+
+
+rosservice call /assemble_scans 1537921496782000000 1537921513696000000 > cloud.txt
+
+1537921496.7820
+
+1537921513.6960
+
+00000
+
+1537921496782000000
+1537921513696000000
